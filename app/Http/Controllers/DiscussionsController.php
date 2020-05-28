@@ -24,7 +24,7 @@ class DiscussionsController extends Controller
     public function index()
     {
         return view('discussions.index', [
-            'discussions' => Discussion::paginate(env("ITEMS_PER_PAGE")),
+            'discussions' => Discussion::filterByChannels()->paginate(env("ITEMS_PER_PAGE")),
         ]);
     }
 
@@ -107,8 +107,6 @@ class DiscussionsController extends Controller
     public function markAsBestReply(Discussion $discussion, Reply $reply)
     {
         $discussion->markAsBestReply($reply);
-
-        $reply->owner->notify(new ReplyMarkedAsBestReply($discussion));
         
         session()->flash('success', 'Marked as best reply.');
         return redirect()->back();
