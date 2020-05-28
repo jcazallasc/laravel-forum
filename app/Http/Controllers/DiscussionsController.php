@@ -7,6 +7,7 @@ use App\Discussion;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\Discussions\CreateDiscussionsRequest;
+use App\Notifications\ReplyMarkedAsBestReply;
 
 class DiscussionsController extends Controller
 {
@@ -103,9 +104,11 @@ class DiscussionsController extends Controller
         //
     }
 
-    public function reply(Discussion $discussion, Reply $reply)
+    public function markAsBestReply(Discussion $discussion, Reply $reply)
     {
         $discussion->markAsBestReply($reply);
+
+        $reply->owner->notify(new ReplyMarkedAsBestReply($discussion));
         
         session()->flash('success', 'Marked as best reply.');
         return redirect()->back();
