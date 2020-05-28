@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-@foreach ($discussions as $discussion)
+@forelse ($discussions as $discussion)
     <div class="card mb-3">
         @include('partials.discussions.header')
 
@@ -9,6 +9,8 @@
             <h3 class="text-center font-weight-bold">{{ $discussion->title }}</h3>
         </div>
     </div>
-@endforeach
-{{ $discussions->links() }}
+@empty
+    <h3 class="text-center font-weight-bold pt-5">No discussions found</h3> 
+@endforelse
+{{ $discussions->appends(['channel' => request()->query('channel')])->links() }}
 @endsection
