@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 $factory->define(Discussion::class, function (Faker $faker) {
-    $title = $faker->unique()->words(2, true);
+    $title = ucfirst($faker->unique()->words(2, true));
     $user_id = User::where('email', 'jcazallasc@gmail.com')->first()->id;
     $channel_id = Channel::all()->random()->id;
 

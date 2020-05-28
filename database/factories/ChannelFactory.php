@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 $factory->define(Channel::class, function (Faker $faker) {
-    $name = $faker->unique()->words(2, true);
+    $name = ucfirst($faker->unique()->words(2, true));
 
     return [
         'name' => $name,
