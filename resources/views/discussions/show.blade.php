@@ -8,6 +8,21 @@
         <h3 class="text-center font-weight-bold">{{ $discussion->title }}</h3>
         <hr>
         {!! $discussion->content !!}
+
+        @if($discussion->bestReply)
+            <div class="card border-secondary mt-5">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <img class="rounded-circle w-25 mr-2" src="{{ Gravatar::src($discussion->bestReply->owner->email) }}" alt="{{ $discussion->bestReply->owner->name }}">
+                            <strong>{{ $discussion->bestReply->owner->name }}</strong>
+                        </div>
+                        <div>BEST REPLY</div>
+                    </div>
+                </div>
+                <div class="card-body">{!! $discussion->bestReply->content !!}</div>
+            </div>
+        @endif
     </div>
 </div>
 
@@ -18,6 +33,16 @@
                 <div>
                     <img src="{{ Gravatar::src($reply->owner->email) }}" alt="{{ $reply->owner->name }}" class="rounded-circle w-25 mr-2"/>
                     <span>{{ $reply->owner->name }}</span>
+                </div>
+                <div>
+                    @if(auth()->user()->id === $discussion->user_id && $discussion->reply_id !== $reply->id)
+                        <form action="{{ route('discussions.best-reply', ['discussion' => $discussion->slug, 'reply' => $reply->id]) }}" method="POST">
+                            @csrf 
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-sm btn-primary">Mark as best</button>
+                            </div>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>

@@ -22,4 +22,16 @@ class Discussion extends BaseModel
     {
         return 'slug';
     }
+
+    public function markAsBestReply(Reply $reply)
+    {
+        $this->update([
+            'reply_id' => $reply->id,
+        ]);
+    }
+
+    public function bestReply()
+    {
+        return $this->belongsTo(Reply::class, 'reply_id');
+    }
 }
