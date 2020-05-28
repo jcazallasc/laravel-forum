@@ -35,14 +35,16 @@
                     <span>{{ $reply->owner->name }}</span>
                 </div>
                 <div>
-                    @if(auth()->user()->id === $discussion->user_id && $discussion->reply_id !== $reply->id)
-                        <form action="{{ route('discussions.best-reply', ['discussion' => $discussion->slug, 'reply' => $reply->id]) }}" method="POST">
-                            @csrf 
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-sm btn-primary">Mark as best</button>
-                            </div>
-                        </form>
-                    @endif
+                    @auth
+                        @if(auth()->user()->id === $discussion->user_id && $discussion->reply_id !== $reply->id)
+                            <form action="{{ route('discussions.best-reply', ['discussion' => $discussion->slug, 'reply' => $reply->id]) }}" method="POST">
+                                @csrf 
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-sm btn-primary">Mark as best</button>
+                                </div>
+                            </form>
+                        @endif
+                    @endauth
                 </div>
             </div>
         </div>
