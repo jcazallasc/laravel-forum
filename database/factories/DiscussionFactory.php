@@ -10,7 +10,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Discussion::class, function (Faker $faker) {
     $title = ucfirst($faker->unique()->words(2, true));
-    $user_id = User::where('email', 'jcazallasc@gmail.com')->first()->id;
+    $user_id = User::all()->random()->id;
     $channel_id = Channel::all()->random()->id;
 
     return [
